@@ -1,0 +1,179 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenFDA Drug Information</title>
+</head>
+<body>
+    <h1>Search OpenFDA Drug Information</h1>
+
+    <label for="medicineInput">Enter Medicine Name:</label>
+    <input type="text" id="medicineInput" placeholder="e.g., aspirin">
+    <button onclick="searchMedicine()">Search</button>
+
+    <div id="resultContainer"></div>
+    <pre id="rawDataContainer"></pre>
+
+    <script>
+        function searchMedicine() {
+            // Get the medicine name from the input field
+            const medicineName = document.getElementById('medicineInput').value.trim();
+
+            if (medicineName === '') {
+                alert('Please enter a medicine name.');
+                return;
+            }
+
+            // Define the API endpoint with the medicine name as a search parameter
+            const apiUrl = `https://api.fda.gov/drug/label.json?search=openfda.generic_name:${medicineName}&limit=1`;
+
+            // Make the API request using the fetch function
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Display the raw JSON data
+                    displayRawData(data);
+
+                    // Check for results and display appropriate message
+                    if (data.results && data.results.length > 0) {
+                        displayResults(data.results[0]);
+                    } else {
+                        displayResults(null);
+                    }
+                })
+                .catch(error => {
+                    // Handle any errors that occurred during the fetch
+                    console.error('Error:', error.message);
+                });
+        }
+
+        function displayResults(result) {
+            // Display the formatted details in the resultContainer div
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = ''; // Clear previous results
+
+            if (result) {
+                resultContainer.innerHTML = '<h2>Medicine Details:</h2>';
+                for (const key in result) {
+                    if (result.hasOwnProperty(key)) {
+                        resultContainer.innerHTML += `<p><strong>${key}:</strong> ${result[key]}</p>`;
+                    }
+                }
+            } else {
+                resultContainer.innerHTML = '<p>No information found for the specified medicine.</p>';
+            }
+        }
+
+        function displayRawData(data) {
+            // Display the raw JSON data in the rawDataContainer pre element
+            const rawDataContainer = document.getElementById('rawDataContainer');
+            rawDataContainer.textContent = JSON.stringify(data, null, 2);
+        }
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenFDA Drug Information</title>
+</head>
+<body>
+    <h1>Search OpenFDA Drug Information</h1>
+
+    <!-- Input field for entering the medicine name -->
+    <label for="medicineInput">Enter Medicine Name:</label>
+    <input type="text" id="medicineInput" placeholder="e.g., aspirin">
+    <!-- Button to trigger the search -->
+    <button onclick="searchMedicine()">Search</button>
+
+    <!-- Container to display formatted results -->
+    <div id="resultContainer"></div>
+    <!-- Container to display raw JSON data -->
+    <pre id="rawDataContainer"></pre>
+
+    <!-- JavaScript code for interacting with the OpenFDA API -->
+    <script>
+        // Function to search for medicine information
+        function searchMedicine() {
+            // Get the medicine name from the input field
+            const medicineName = document.getElementById('medicineInput').value.trim();
+
+            // Check if a medicine name was entered
+            if (medicineName === '') {
+                alert('Please enter a medicine name.');
+                return;
+            }
+
+            // Define the API endpoint with the medicine name as a search parameter
+            const apiUrl = `https://api.fda.gov/drug/label.json?search=${medicineName}&limit=1`;
+
+            // Make the API request using the fetch function
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Display the raw JSON data
+                    displayRawData(data);
+
+                    // Check for results and display appropriate message
+                    if (data.results && data.results.length > 0) {
+                        // Display formatted results if available
+                        displayResults(data.results[0]);
+                    } else {
+                        // Display a message if no information is found
+                        displayResults(null);
+                    }
+                })
+                .catch(error => {
+                    // Handle any errors that occurred during the fetch
+                    console.error('Error:', error.message);
+                });
+        }
+
+        // Function to display formatted results
+        function displayResults(result) {
+            // Display the formatted details in the resultContainer div
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = ''; // Clear previous results
+
+            // Check if results are available
+            if (result) {
+                resultContainer.innerHTML = '<h2>Medicine Details:</h2>';
+                // Iterate through the result properties and display them
+                for (const key in result) {
+                    if (result.hasOwnProperty(key)) {
+                        resultContainer.innerHTML += `<p><strong>${key}:</strong> ${result[key]}</p>`;
+                    }
+                }
+            } else {
+                // Display a message if no information is found
+                resultContainer.innerHTML = '<p>No information found for the specified medicine.</p>';
+            }
+        }
+
+        // Function to display raw JSON data
+        function displayRawData(data) {
+            // Display the raw JSON data in the rawDataContainer pre element
+            const rawDataContainer = document.getElementById('rawDataContainer');
+            rawDataContainer.textContent = JSON.stringify(data, null, 2);
+        }
+    </script>
+</body>
+</html>

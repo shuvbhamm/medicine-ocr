@@ -1,0 +1,371 @@
+<!-- code to extract data and highlight the generic name -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OCR.space API Example</title>
+    <style>
+      /* Style to highlight matched words */
+      .highlight {
+        background-color: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Input for selecting an image file -->
+    <input type="file" id="fileInput" accept="image/*" />
+    <!-- Button to trigger OCR -->
+    <button id="performOCRButton">Perform OCR</button>
+    <!-- Display area for OCR result -->
+    <div id="result"></div>
+
+    <script>
+      // Function to perform OCR
+      function performOCR() {
+        const fileInput = document.getElementById("fileInput");
+        const resultDiv = document.getElementById("result");
+
+        // Check if a file is selected
+        if (!fileInput.files || fileInput.files.length === 0) {
+          resultDiv.innerText = "Please select an image file.";
+          return;
+        }
+
+        // Replace with your OCR.space API key
+        const apiKey = "K85086739688957";
+        const apiEndpoint = "https://api.ocr.space/parse/image";
+
+        const formData = new FormData();
+        formData.append("apikey", apiKey);
+        formData.append("language", "eng");
+        formData.append("isOverlayRequired", "false");
+        formData.append("file", fileInput.files[0]);
+
+        // Make a POST request to OCR.space API
+        fetch(apiEndpoint, {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Handle the OCR results
+            console.log(data);
+            if (data && data.ParsedResults && data.ParsedResults.length > 0) {
+              // Display the OCR result with highlighted specific words
+              resultDiv.innerHTML = highlightSpecificWords(
+                data.ParsedResults[0].ParsedText.replace("." , ",")
+              );
+            } else {
+              resultDiv.innerText = "No OCR results found.";
+            }
+          })
+          .catch((error) => {
+            console.error("Error performing OCR:", error);
+            resultDiv.innerText = "Error performing OCR. Please try again.";
+          });
+      }
+
+      // Function to highlight specific words in the OCR result
+      function highlightSpecificWords(ocrResult) {
+        const specificWords = [
+        "Abacavir",
+          "Abacavir and Lamivudine",
+          "Abacavir-Dolutegravir-Lamivudine",
+          "Abaloparatide",
+          "Abatacept",
+          "Abciximab",
+          "Abemaciclib",
+          "Abiraterone",
+          "AbobotulinumtoxinA",
+          "Abrocitinib",
+          "Acai",
+          "Acalabrutinib",
+          "Acamprosate",
+          "Acarbose",
+          "Acebutolol",
+          "Acetaminophen",
+          "Acetaminophen and Aspirin",
+          "Acetaminophen Butalbital Caffeine Codeine",
+          "Acetaminophen Chlorpheniramine",
+          "Acetaminophen Chlorpheniramine Dextromethorphan",
+          "Acetaminophen Chlorpheniramine Phenylephrine",
+          "Acetaminophen Dextromethorphan Phenylephrine",
+          "Acetaminophen Dextromethorphan Pseudoephedrine",
+          "Acetaminophen Diphenhydramine Dextromethorphan",
+          "Acetaminophen IV",
+          "Acetaminophen Pamabrom Pyridoxine",
+          "Acetaminophen Phenyltoloxamine",
+          "Acetaminophen Rectal",
+          "Acetaminophen-Aspirin-Caffeine",
+          "Acetaminophen-Caffeine-Dihydrocodeine",
+          "Acetaminophen-Ibuprofen",
+          "Acetaminophen/Doxylamine/Dextromethorphan/Phenylephrine",
+          "Acetaminophen/Pamabrom",
+          "Acetaminophen/Pamabrom/Pyrilamine",
+          "Acetaminophen/Pheniramine/Phenylephrine",
+          "Acetazolamide",
+          "Acetic Acid Otic",
+          "Acetohydroxamic Acid",
+          "Acetylcholine",
+          "Acetylcysteine",
+          "Acitretin",
+          "Aclidinium",
+          "Aclidinium-Formoterol",
+          "Aconite",
+          "Activated Charcoal",
+          "Acyclovir",
+          "Acyclovir and Hydrocortisone Topical",
+          "Acyclovir ophthalmic",
+          "Acyclovir Topical",
+          "Adagrasib",
+          "Adalimumab",
+          "Adapalene",
+          "Adapalene and Benzoyl Peroxide Topical",
+          "Adapalene Topical",
+          "Adefovir",
+          "Adenosine",
+          "Ado-Trastuzumab Emtansine",
+          "Aducanumab",
+          "Afamelanotide",
+          "Afatinib",
+          "Aflibercept Intravitreal",
+          "Agalsidase Alfa",
+          "Agalsidase Beta",
+          "Agrimony",
+          "Albendazole",
+          "Albumin",
+          "Albuterol",
+          "Albuterol and Ipratropium Inhalation",
+          "Alcaftadine Ophthalmic",
+          "Alclometasone Topical",
+          "Aldesleukin",
+          "Alectinib",
+          "Alefacept Discontinued",
+          "Alemtuzumab",
+          "Alendronate",
+          "Alendronate and Cholecalciferol",
+          "Alfalfa",
+          "Alfentanil",
+          "Alfuzosin",
+          "Alglucosidase Alfa",
+          "Alirocumab",
+          "Alirocumab",
+          "Aliskiren",
+          "Aliskiren-Amlodipine-Hydrochlorothiazide",
+          "Alitretinoin Topical",
+          "Allogeneic Cultured Keratinocytes/Fibroblasts in Bovine Collagen",
+          "Allopurinol",
+          "Almotriptan",
+          "Aloe",
+          "Alogliptin",
+          "Alogliptin-Metformin",
+          "Alosetron (oral)",
+          "Alpelisib",
+          "Alpha 1 Proteinase Inhibitor",
+          "Alprazolam",
+          "Alprostadil intracavernous/urethra",
+          "Alprostadil IV",
+          "Alteplase",
+          "Altovis",
+          "Aluminum Acetate Solution",
+          "Aluminum Chloride Topical",
+          "Aluminum Hydroxide",
+          "Aluminum Hydroxide-Magnesium Hydroxide",
+          "Aluminum Hydroxide/Magnesium Hydroxide/Simethicone",
+          "Aluminum Hydroxide/Magnesium Trisilicate",
+          "Alvimopan",
+          "Amantadine",
+          "Ambenonium",
+          "Ambrisentan",
+          "Amifampridine",
+          "Amifostine",
+          "Amikacin",
+          "Amikacin Liposome Inhalation",
+          "Amiloride",
+          "Amiloride-Hydrochlorothiazide",
+          "Aminocaproic Acid",
+          "Aminohippurate Sodium",
+          "Aminolevulinic Acid Topical",
+          "Aminosalicylic-Acid",
+          "Amiodarone",
+          "Amisulpride",
+          "Amitriptyline",
+          "Amitriptyline and Chlordiazepoxide",
+          "Amitriptyline-Perphenazine",
+          "Amivantamab",
+          "Amlodipine",
+          "Amlodipine-Atorvastatin",
+          "Amlodipine-Celecoxib",
+          "Amlodipine-Olmesartan",
+          "Ammonium Chloride",
+          "Ammonium lactate topical",
+          "Amobarbital",
+          "Amoxapine",
+          "Amoxicillin",
+          "Amoxicillin-Omeprazole-Rifabutin",
+          "Amoxicillin/Clavulanate",
+          "Amphetamine",
+          "Amphetamine and Dextroamphetamine",
+          "Amphotericin B Cholesteryl Sulfate",
+          "Amphotericin B Deoxycholate",
+          "Amphotericin B Liposomal",
+          "Amphotericin B Phospholipid Complex",
+          "Ampicillin",
+          "Ampicillin/Sulbactam",
+          "Amyl nitrite inhalant",
+          "Anacaulase",
+          "Anagrelide",
+          "Anakinra",
+          "Anamu",
+          "Anastrozole",
+          "Ancestim",
+          "Anhydrous Morphine",
+          "Anidulafungin",
+          "Anifrolumab",
+          "Ansuvimab",
+          "Anthralin",
+          "Anthrax Immune Globulin",
+          "Anthrax Vaccine Adsorbed Adjuvanted",
+          "Anti-Inhibitor Coagulant Complex",
+          "Antihemophilic Factor Recombinant",
+          "Antihemophilic Factor-von Willebrand Factor Complex",
+          "Antipyrine Benzocaine Phenylephrine",
+          "Antithrombin III",
+          "Antithymocyte Globulin Equine",
+          "Antithymocyte Globulin Rabbit",
+          "Antivenin Centruroides Scorpion",
+          "Antivenin, Eastern and Texas Coral Snakes",
+          "Apalutamide",
+          "Apaziquone",
+          "Apixaban",
+          "Apomorphine",
+          "Apremilast",
+          "Aprepitant",
+          "Arbaclofen",
+          "Arformoterol Inhalation",
+          "Argatroban",
+          "Arginine",
+          "Aripiprazole",
+          "Armodafinil",
+          "Arsenic Trioxide",
+          "Artemether and Lumefantrine",
+          "Artemether Lumefantrine",
+          "Artesunate",
+          "Articaine-Epinephrine",
+          "Artichoke",
+          "Articulin",
+          "Artificial Saliva",
+          "Artificial Tears",
+          "Asciminib",
+          "Ascorbic Acid",
+          "Asenapine",
+          "Asfotase Alfa",
+          "Ashwagandha",
+          "Asparaginase Erwinia Chrysanthemi Recombinant",
+          "Aspirin",
+          "Aspirin and Dipyridamole",
+          "Aspirin Butalbital Caffeine Codeine",
+          "Aspirin oxycodone",
+          "Aspirin Rectal",
+          "Aspirin, carisoprodol, and codeine",
+          "Aspirin-Citric Acid-Sodium Bicarbonate",
+          "Aspirin-Omeprazole",
+          "Aspirin/Chlorpheniramine/Dextromethorphan",
+          "Aspirin/Chlorpheniramine/Phenylephrine",
+          "Astragalus",
+          "Ataluren",
+          "Atazanavir",
+          "Atazanavir-Cobicistat",
+          "Atenolol",
+          "Atenolol-Chlorthalidone",
+          "Atezolizumab",
+          "Atogepant",
+          "Atoltivimab-Maftivimab-Odesivimab",
+          "Atomoxetine",
+          "Atorvastatin",
+          "Atovaquone",
+          "Atovaquone Proguanil",
+          "Atracurium",
+          "Atropine",
+          "Atropine Ophthalmic",
+          "Atropine/Pralidoxime",
+          "Attapulgite",
+          "Auranofin",
+          "Avacincaptad Pegol Intravitreal",
+          "Avacopan",
+          "Avalglucosidase Alfa",
+          "Avanafil",
+          "Avapritinib",
+          "Avatrombopag",
+          "Avelumab",
+          "Axalimogene Filolisbac",
+          "Axicabtagene Ciloleucel",
+          "Axitinib",
+          "Azacitidine",
+          "Azathioprine",
+          "Azelaic Acid",
+          "Azelastine",
+          "Azelastine ophthalmic",
+          "Azelastine-Fluticasone Intranasal",
+          "Azficel-T",
+          "Azilsartan",
+          "Azilsartan-Chlorthalidone",
+          "Azithromycin",
+          "Azithromycin Ophthalmic",
+          "Aztreonam",
+          "Aztreonam Inhalation",
+          // Add more specific words as needed
+        ];
+        let highlightedResult = ocrResult;
+
+        specificWords.forEach((word) => {
+          // Create a regular expression to match whole words
+          const regex = new RegExp(`\\b${word}\\b`, "gi");
+          
+          // Replace matched words with a highlighted version
+          highlightedResult = highlightedResult.replace(
+            regex,
+            `<span class="highlight">${word}</span>`
+          );
+        });
+
+        return `OCR Result: ${highlightedResult}`;
+      }
+
+      // Example usage:
+      // (Assuming you have a button with id="performOCRButton" to trigger OCR)
+      document
+        .getElementById("performOCRButton")
+        .addEventListener("click", function () {
+          performOCR();
+        });
+
+      // Using axios to fetch HTML content from a website (in this case, not directly related to OCR)
+      const axios = require("axios");
+
+      // URL of the website
+      const url = "https://www.rxlist.com/script/main/alphaidx.asp?p=a_rx-mcon";
+
+      // Fetch HTML content from the website
+      axios
+        .get(url)
+        .then((response) => {
+          // Extract words using regular expressions (adjust as needed)
+          const words = response.data.match(/\b\w+\b/g);
+
+          // Display or process the matched words
+          if (words) {
+            console.log("Matched Words:", words);
+          } else {
+            console.log("No words found.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching website:", error.message);
+        });
+        //.............................
+        
+    </script>
+  </body>
+</html>
